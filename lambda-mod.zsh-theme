@@ -23,7 +23,11 @@ function check_git_prompt_info() {
 function get_right_prompt() {
     local jobs_nbr=$(jobs -l | wc -l)
     if [ $jobs_nbr -gt 0 ]; then
-        echo -n "%{$fg_bold[yellow]$jobs_nbr$reset_color%}"
+        if [ $jobs_nbr -eq 1 ]; then
+            echo -n "%{$fg_bold[yellow]%}⚙%{$reset_color%}"
+        else
+            echo -n "%{$fg_bold[yellow]%}⚙ $jobs_nbr%{$reset_color%}"
+        fi
     else
         echo -n "%{$reset_color%}"
     fi
@@ -40,7 +44,7 @@ RPROMPT='$(get_right_prompt)'
 # Format for git_prompt_info()
 ZSH_THEME_GIT_PROMPT_PREFIX="at %{$fg[blue]%} "
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="*"
+ZSH_THEME_GIT_PROMPT_DIRTY="⍟"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%} ✔"
 
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{●$reset_color%}"
