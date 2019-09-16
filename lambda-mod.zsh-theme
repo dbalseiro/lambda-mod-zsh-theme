@@ -21,17 +21,24 @@ function check_git_prompt_info() {
 }
 
 function get_right_prompt() {
-    local jobs_nbr=$(jobs -l | wc -l)
-    if [ $jobs_nbr -gt 0 ]; then
-        if [ $jobs_nbr -eq 1 ]; then
-            echo -n "%{$fg_bold[yellow]%}⚙%{$reset_color%}"
-        else
-            echo -n "%{$fg_bold[yellow]%}⚙ $jobs_nbr%{$reset_color%}"
-        fi
+  local jobs_nbr=$(jobs -l | wc -l)
+  local disk_perc=$(df | awk '$6 == "/" { print $5 }' | sed s/%//)
+
+  if [ $jobs_nbr -gt 0 ]; then
+    if [ $jobs_nbr -eq 1 ]; then
+      echo -n "%{$fg_bold[yellow]%}⚙%{$reset_color%}"
     else
-        echo -n "%{$reset_color%}"
+      echo -n "%{$fg_bold[yellow]%}⚙ $jobs_nbr%{$reset_color%}"
     fi
+  fi
+
+  if [ $disk_perc -gt 75 ]; then
+    echo -n "%{$fg_bold[red]%} $disk_perc%%"
+  fi
+
+  echo -n "%{$reset_color%}"
 }
+
 
 PROMPT=$'\n'$LAMBDA'\
  %{$fg_bold[$USERCOLOR]%}%n\
@@ -42,7 +49,7 @@ PROMPT=$'\n'$LAMBDA'\
 RPROMPT='$(get_right_prompt)'
 
 # Format for git_prompt_info()
-ZSH_THEME_GIT_PROMPT_PREFIX="at %{$fg[blue]%} "
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%} "
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="⍟"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%} ✔"
