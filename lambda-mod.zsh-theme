@@ -20,9 +20,26 @@ function check_git_prompt_info() {
     fi
 }
 
+function count_jobs() {
+  jobs | awk '
+    BEGIN { a = 0 }
+    /^\[/ { a++ }
+    END   { print a }
+  '
+}
+
+function calc_disk_space() {
+  df | awk '
+    $6 == "/" {
+      gsub("%", "", $5);
+      print $5;
+    }
+  '
+}
+
 function get_right_prompt() {
-  local jobs_nbr=$(jobs -l | wc -l)
-  local disk_perc=$(df | awk '$6 == "/" { print $5 }' | sed s/%//)
+  local jobs_nbr=`count_jobs`
+  local disk_perc=`calc_disk_space`
 
   if [ $jobs_nbr -gt 0 ]; then
     if [ $jobs_nbr -eq 1 ]; then
