@@ -9,7 +9,6 @@ if [[ "$USER" == "root" ]]; then USERCOLOR="red"; else USERCOLOR="yellow"; fi
 function check_git_prompt_info() {
     if type git &>/dev/null && git rev-parse --git-dir > /dev/null 2>&1; then
       if [[ -z $(git_super_status 2> /dev/null) ]]; then
-            echo puto
             echo "%{$fg[blue]%}detached-head%{$reset_color%}
 %{$fg[yellow]%}λ "
         else
@@ -48,10 +47,11 @@ function kubecontext() {
   ns=$(kubectl ns -c)
   out=$ctx/$ns
 
-  case "$out" in
-    "juvo-ilab-prod/staging"|"juvo-ilab-prod/prod"|"juvo-dev/dev"|"juvo-dev/platform")
+  case "$ns" in
+    *staging*|*prod*|*dev*|*platform*)
       out=$ns ;;
   esac
+
   echo "󱃾 $out"
 }
 
