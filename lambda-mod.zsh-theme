@@ -55,24 +55,24 @@ function kubecontext() {
   echo "󱃾 $out"
 }
 
-function get_right_prompt() {
-  local jobs_nbr=`count_jobs`
-  local disk_perc=`calc_disk_space`
-
-  if [ $jobs_nbr -gt 0 ]; then
-    if [ $jobs_nbr -eq 1 ]; then
-      echo -n "%{$fg_bold[yellow]%}⚙%{$reset_color%}"
-    else
-      echo -n "%{$fg_bold[yellow]%}⚙ $jobs_nbr%{$reset_color%}"
-    fi
-  fi
-
-  if [ $disk_perc -gt 75 ]; then
-    echo -n "%{$fg_bold[red]%} $disk_perc%%"
-  fi
-
-  echo -n "%{$reset_color%}"
-}
+# function get_right_prompt() {
+#   local jobs_nbr=`count_jobs`
+#   local disk_perc=`calc_disk_space`
+#
+#   if [[ $jobs_nbr -gt 0 ]]; then
+#     if [[ $jobs_nbr -eq 1 ]]; then
+#       echo -n "%{$fg_bold[yellow]%}⚙%{$reset_color%}"
+#     else
+#       echo -n "%{$fg_bold[yellow]%}⚙ $jobs_nbr%{$reset_color%}"
+#     fi
+#   fi
+#
+#   if [ $disk_perc -gt 75 ]; then
+#     echo -n "%{$fg_bold[red]%} $disk_perc%%"
+#   fi
+#
+#   echo -n "%{$reset_color%}"
+# }
 
 
 PROMPT=$'\n'$LAMBDA'\
@@ -83,7 +83,7 @@ PROMPT=$'\n'$LAMBDA'\
  $(check_git_prompt_info)\
 %{$reset_color%}'
 
-RPROMPT='$(get_right_prompt)'
+# RPROMPT='$(get_right_prompt)'
 
 # Format for git_prompt_info()
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%}⭠ "
